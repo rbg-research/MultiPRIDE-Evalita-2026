@@ -3,6 +3,9 @@ multipride_data
 .ipynb_checkpoints
 .DS_Store
 
+*.gz
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
