@@ -11,14 +11,14 @@ cd MultiPRIDE-Evalita-2026
 # Notebooks
 ## Contents
 
-| S.No |      Division       |                                                              Description                                                               |                                       Link                                        |
-|:----:|:-------------------:|:--------------------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|
-|  1   | Frequency Analysis  |                          Distributional Analysis of Data and Label, Class Specific Feature Importance Scoring                          |                                [Link](notebooks/0_Descriptive-Analytics-Data.ipynb)                                 |
-|  2   | Frequency Analysis  | Baseline setup with Conventional ML Algorithms, Language Specific and Multi-lingual Classification, Stratified 5-fold Cross Validation |   [Link](notebooks/1_Conventional-ML-Baseline.ipynb)   |
-|  3   | Contextual Analysis |    Deep Embedding methods followed by Conventional ML Algorithms, Multi-lingual Classification, Stratified 5-fold Cross Validation     |     |
-|  4   | Contextual Analysis |                              Fine-tuning Multilingual Language Models, Stratified 5-fold Cross Validation                              |               |
-|  5   | Contextual Analysis |                                   Prompt Analysis w.r.t Zero-shot Multilingual Large Language Models                                   |          |
-|  6   | Contextual Analysis |                                   Prompt Analysis w.r.t Few-shot Multilingual Large Language Models                                    |  |
+| S.No |      Division       |                                                              Description                                                               |                                          Link                                           |
+|:----:|:-------------------:|:--------------------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|
+|  1   | Frequency Analysis  |                          Distributional Analysis of Data and Label, Class Specific Feature Importance Scoring                          |                  [Link](notebooks/0_Descriptive-Analytics-Data.ipynb)                   |
+|  2   | Frequency Analysis  | Baseline setup with Conventional ML Algorithms, Language Specific and Multi-lingual Classification, Stratified 5-fold Cross Validation |                   [Link](notebooks/1_Conventional-ML-Baseline.ipynb)                    |
+|  3   | Contextual Analysis |    Deep Embedding methods followed by Conventional ML Algorithms, Multi-lingual Classification, Stratified 5-fold Cross Validation     | [Link 1](notebooks/2_Compute-Embeddings.ipynb),     [Link2](notebooks/3_Embedding-Conventional-ML-Baseline.ipynb) |
+|  4   | Contextual Analysis |                              Fine-tuning Multilingual Language Models, Stratified 5-fold Cross Validation                              |                                                                                         |
+|  5   | Contextual Analysis |                                   Prompt Analysis w.r.t Zero-shot Multilingual Large Language Models                                   |                                                                                         |
+|  6   | Contextual Analysis |                                   Prompt Analysis w.r.t Few-shot Multilingual Large Language Models                                    |                                                                                         |
 
 
 
