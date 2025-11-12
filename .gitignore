@@ -3,6 +3,8 @@ multipride_data
 .ipynb_checkpoints
 .DS_Store
 embeddings
+fine_tuned_models
+
 
 *.gz
 

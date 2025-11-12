@@ -16,7 +16,7 @@ cd MultiPRIDE-Evalita-2026
 |  1   | Frequency Analysis  |                          Distributional Analysis of Data and Label, Class Specific Feature Importance Scoring                         |                            [Link](notebooks/0_Descriptive-Analytics-Data.ipynb)                             |
 |  2   | Frequency Analysis  | Baseline setup with Conventional ML Algorithms, Language Specific and Multi-lingual Classification, Stratified 5-fold Cross Validation |                             [Link](notebooks/1_Baseline-Conventional-ML.ipynb)                              |
 |  3   | Contextual Analysis |    Deep Embedding methods followed by Conventional ML Algorithms, Multi-lingual Classification, Stratified 5-fold Cross Validation    |                             [Link](notebooks/1_Baseline-Conventional-ML.ipynb)                              |
-|  4   | Contextual Analysis |                              Fine-tuning Multilingual Language Models, Stratified 5-fold Cross Validation                             |                                                                                                             |
+|  4   | Contextual Analysis |                              Fine-tuning Multilingual Language Models, Stratified 5-fold Cross Validation                             |                                                                        [Link](notebooks/3_Finetune-LM.ipynb)                                     |
 |  5   | Contextual Analysis |                            Prompt Analysis w.r.t Zero-shot and Few-shot Multilingual Large Language Models                            |                                  [Link](notebooks/2_Baseline-GenAI.ipynb)                                   |
 
 
