@@ -18,7 +18,7 @@ cd MultiPRIDE-Evalita-2026
 |  3   |              Contextual Analysis              |    Deep Embedding methods followed by Conventional ML Algorithms, Multi-lingual Classification, Stratified 5-fold Cross Validation     |       [Link](notebooks/1_Baseline-Conventional-ML.ipynb)        |
 |  4   |              Contextual Analysis              |                              Fine-tuning Multilingual Language Models, Stratified 5-fold Cross Validation                              |              [Link](notebooks/3_Finetune-LM.ipynb)              |
 |  5   |          Contextual Analysis - GenAI          |                            Prompt Analysis w.r.t Zero-shot and Few-shot Multilingual Large Language Models                             |            [Link](notebooks/2_Baseline-GenAI.ipynb)             |
-|  6   | Augmentation with GenAI + Contextual Analysis |                                  Data Augmentation, Fine-tuning Multilingual LM with Augumented Data                                  | [Link 1](notebooks/4_Data-Augumentation-Back-Translation.ipynb) |
+|  6   | Augmentation with GenAI + Contextual Analysis |                                  Data Augmentation, Fine-tuning Multilingual LM with Augumented Data                                  | [Link 1](notebooks/4_Data-Augumentation-Back-Translation.ipynb) [Link 2](notebooks/5_Finetune-LM-with-Augmented-Data.ipynb)|
 
 
 
@@ -28,6 +28,8 @@ cd MultiPRIDE-Evalita-2026
 # Frequency Analysis: Chi-Square Feature Selection
 ![Frequency Analysis](figures/chi2_features_by_language.svg)
 
+# Label Distribution on Augmented Data
+![Label Distribution - Augmented](figures/augumented_data_label_distribution.svg)
 
 # Installation
 
