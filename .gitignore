@@ -5,6 +5,7 @@ multipride_data
 embeddings
 fine_tuned_models
 
+augmented_multilingual_tweets.csv
 
 *.gz
 
