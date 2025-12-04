@@ -493,3 +493,92 @@ def run_inference(df: pd.DataFrame, config) -> Dict:
         "languages": languages,
         "metrics": metrics
     }
+
+
+def apply_language_specific_thresholds(probs, languages, thresholds):
+    """Apply language-specific probability thresholds."""
+    probs_array = np.array(probs)
+    probs_class_1 = probs_array[:, 1]  # Get positive class probabilities
+
+    predictions = np.zeros(len(probs), dtype=int)
+
+    for lang, threshold in thresholds.items():
+        mask = np.array(languages) == lang
+        predictions[mask] = (probs_class_1[mask] >= threshold).astype(int)
+
+    return predictions.tolist()
+
+
+def run_test(df: pd.DataFrame, config, language_thresholds: Dict[str, float] = None) -> Dict:
+    print(f"Running inference on {len(df)} samples...")
+    print(f"Device: {config.DEVICE}")
+
+    if language_thresholds is None:
+        language_thresholds = config.LANGUAGE_THRESHOLDS
+
+    tokenizer = AutoTokenizer.from_pretrained(config.MODEL_NAME)
+
+    model = AutoModelForSequenceClassification.from_pretrained(
+        config.MODEL_NAME,
+        num_labels=config.NUM_LABELS
+    )
+
+    # Load checkpoint
+    checkpoint = torch.load(config.CHECKPOINT_PATH, map_location=config.DEVICE)
+    if isinstance(checkpoint, dict):
+        if "model_state_dict" in checkpoint:
+            state_dict = checkpoint["model_state_dict"]
+        elif "state_dict" in checkpoint:
+            state_dict = checkpoint["state_dict"]
+        else:
+            state_dict = checkpoint
+    else:
+        state_dict = checkpoint
+
+    model.load_state_dict(state_dict, strict=False)
+    print(f"Loaded checkpoint from: {config.CHECKPOINT_PATH}")
+
+    if isinstance(checkpoint, dict):
+        for key in ["fold", "epoch", "f1_score"]:
+            if key in checkpoint:
+                print(f"  {key.capitalize()}: {checkpoint[key]}")
+
+    model.to(config.DEVICE)
+    model.eval()
+
+    texts = df["text"].tolist()
+    ids = df["id"].tolist()
+    languages = df["lang"].tolist()
+
+    dataset = TestDataset(texts, tokenizer, config.MAX_LENGTH)
+    dataloader = DataLoader(dataset, batch_size=config.BATCH_SIZE, shuffle=False)
+
+    all_preds = []
+    all_probs = []
+
+    with torch.no_grad():
+        for batch in tqdm(dataloader, desc="Inference"):
+            input_ids = batch["input_ids"].to(config.DEVICE)
+            attention_mask = batch["attention_mask"].to(config.DEVICE)
+
+            outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+            logits = outputs.logits
+            probs = torch.softmax(logits, dim=-1)
+            preds = torch.argmax(logits, dim=-1)
+
+            all_probs.extend(probs.cpu().numpy().tolist())
+            all_preds.extend(preds.cpu().numpy().tolist())
+
+    all_preds = apply_language_specific_thresholds(
+        all_probs,
+        languages,
+        language_thresholds
+    )
+
+    return {
+        "predictions": all_preds,
+        "probabilities": all_probs,
+        "ids": ids,
+        "languages": languages
+    }
+

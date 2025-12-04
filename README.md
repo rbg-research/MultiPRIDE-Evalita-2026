@@ -11,14 +11,16 @@ cd MultiPRIDE-Evalita-2026
 # Notebooks
 ## Contents
 
-| S.No |                   Division                    |                                                              Description                                                               |                              Link                               |
-|:----:|:---------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------:|
-|  1   |              Frequency Analysis               |                          Distributional Analysis of Data and Label, Class Specific Feature Importance Scoring                          |      [Link](notebooks/0_Descriptive-Analytics-Data.ipynb)       |
-|  2   |              Frequency Analysis               | Baseline setup with Conventional ML Algorithms, Language Specific and Multi-lingual Classification, Stratified 5-fold Cross Validation |       [Link](notebooks/1_Baseline-Conventional-ML.ipynb)        |
-|  3   |              Contextual Analysis              |    Deep Embedding methods followed by Conventional ML Algorithms, Multi-lingual Classification, Stratified 5-fold Cross Validation     |       [Link](notebooks/1_Baseline-Conventional-ML.ipynb)        |
-|  4   |              Contextual Analysis              |                              Fine-tuning Multilingual Language Models, Stratified 5-fold Cross Validation                              |              [Link](notebooks/3_Finetune-LM.ipynb)              |
-|  5   |          Contextual Analysis - GenAI          |                            Prompt Analysis w.r.t Zero-shot and Few-shot Multilingual Large Language Models                             |            [Link](notebooks/2_Baseline-GenAI.ipynb)             |
-|  6   | Augmentation with GenAI + Contextual Analysis |                                  Data Augmentation, Fine-tuning Multilingual LM with Augumented Data                                  | [Link 1](notebooks/4_Data-Augumentation-Back-Translation.ipynb) [Link 2](notebooks/5_Finetune-LM-with-Augmented-Data.ipynb)|
+| S.No |                   Division                    |                                                                          Description                                                                           |                              Link                              |
+|:----:|:---------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------:|
+|  1   |              Frequency Analysis               |                                      Distributional Analysis of Data and Label, Class Specific Feature Importance Scoring                                      |      [Link](notebooks/0_Descriptive-Analytics-Data.ipynb)      |
+|  2   |              Frequency Analysis               |             Baseline setup with Conventional ML Algorithms, Language Specific and Multi-lingual Classification, Stratified 5-fold Cross Validation             |       [Link](notebooks/1_Baseline-Conventional-ML.ipynb)       |
+|  3   |              Contextual Analysis              |                Deep Embedding methods followed by Conventional ML Algorithms, Multi-lingual Classification, Stratified 5-fold Cross Validation                 |       [Link](notebooks/1_Baseline-Conventional-ML.ipynb)       |
+|  4   |              Contextual Analysis              |                                          Fine-tuning Multilingual Language Models, Stratified 5-fold Cross Validation                                          |              [Link](notebooks/3_Finetune-LM.ipynb)             |
+|  5   |          Contextual Analysis - GenAI          |                                        Prompt Analysis w.r.t Zero-shot and Few-shot Multilingual Large Language Models                                         |            [Link](notebooks/2_Baseline-GenAI.ipynb)            |
+|  6   | Augmentation with GenAI + Contextual Analysis |                                              Data Augmentation, Fine-tuning Multilingual LM with Augumented Data                                               | [Link 1](notebooks/4_Data-Augumentation-Back-Translation.ipynb) [Link 2](notebooks/5_Finetune-LM-with-Augmented-Data.ipynb)|
+|  7   |   MLM Fine tuning with Parameter Selection    |                        Transductive Transfer Learning, Fine-tuning Multilingual LM with Augumented Data and Optuna Parameter Selection                         | [Link 1](notebooks/6_Finetune-LM-with-Optuna-for-MLM.ipynb)|
+|  8   |           Final Submission Notebook           | Transductive followed Inductive Transfer Learning, Fine-tuning Multilingual LM with Augumented Data and Optuna Parameter Selection, Optimal Threhold Detection | [Link 1](notebooks/7_Finetune-LM-with-Augmented-Data-Optuna-Parameters.ipynb)|
 
 
 
@@ -42,6 +44,8 @@ cd MultiPRIDE-Evalita-2026
 |:--:|:--:|
 |![Optuna Parameter Selection](figures/optuna_learning_rate_impact.svg)|   ![Optuna Parameter Selection](figures/optuna_weight_decay_impact.svg) |
 
+# Threshold Analysis
+![Threshold Analysis](figures/threshold_analysis.png)
 
 # Installation
 
