@@ -4,7 +4,8 @@ multipride_data
 .DS_Store
 embeddings
 fine_tuned_models
-
+fine_tuned_mlm_models_optuna
+fine_tuned_models_mlm
 augmented_multilingual_tweets.csv
 
 *.gz

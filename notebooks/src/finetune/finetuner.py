@@ -9,10 +9,12 @@ import warnings
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import DataLoader
 from torch.optim import AdamW
 from transformers import XLMRobertaTokenizer, XLMRobertaForSequenceClassification, get_linear_schedule_with_warmup
-
+from typing import List, Dict
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from torch.utils.data import DataLoader, Dataset
+from tqdm import tqdm
 
 from .dataloader import MultilingualDataset, StratifiedMultilingualSplitter, DynamicUndersamplingSampler
 from .train import train_epoch, validate
@@ -172,7 +174,7 @@ class ModelCheckpointManager:
         return [(score, path, epoch, fold) for score, path, epoch, fold in self.best_models]
 
 
-def main(df: pd.DataFrame, Config):
+def run_train(df: pd.DataFrame, Config):
     """
     Executes the main fine-tuning pipeline for a multilingual model.
 
@@ -196,9 +198,6 @@ def main(df: pd.DataFrame, Config):
         ValueError: If validation set contains no positive samples or training set
             has very few positive samples.
     """
-    logger.info("=" * 80)
-    logger.info("Starting Fine-tuning Pipeline")
-    logger.info("=" * 80)
 
     Path(Config.OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
     Path(Config.RESULTS_DIR).mkdir(parents=True, exist_ok=True)
@@ -382,3 +381,115 @@ def main(df: pd.DataFrame, Config):
     logger.info("=" * 80)
     for score, path, epoch, fold in checkpoint_manager.get_best_models():
         logger.info(f"Fold {fold}, Epoch {epoch}: F1={score:.4f} -> {path}")
+        final_path = path
+    return final_path
+
+
+class TestDataset(Dataset):
+    """Dataset for inference"""
+    def __init__(self, texts: List[str], tokenizer, max_length: int = 128):
+        self.texts = texts
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+
+    def __len__(self):
+        return len(self.texts)
+
+    def __getitem__(self, idx):
+        text = str(self.texts[idx])
+        encoding = self.tokenizer(
+            text,
+            truncation=True,
+            padding="max_length",
+            max_length=self.max_length,
+            return_tensors="pt"
+        )
+        return {
+            "input_ids": encoding["input_ids"].squeeze(0),
+            "attention_mask": encoding["attention_mask"].squeeze(0),
+        }
+
+
+def run_inference(df: pd.DataFrame, config) -> Dict:
+    print(f"Running inference on {len(df)} samples...")
+    print(f"Device: {config.DEVICE}")
+
+    tokenizer = AutoTokenizer.from_pretrained(config.MODEL_NAME)
+
+    model = AutoModelForSequenceClassification.from_pretrained(
+        config.MODEL_NAME,
+        num_labels=config.NUM_LABELS
+    )
+
+    checkpoint = torch.load(config.CHECKPOINT_PATH, map_location=config.DEVICE)
+
+    if isinstance(checkpoint, dict):
+        if "model_state_dict" in checkpoint:
+            state_dict = checkpoint["model_state_dict"]
+        elif "state_dict" in checkpoint:
+            state_dict = checkpoint["state_dict"]
+        else:
+            state_dict = checkpoint
+    else:
+        state_dict = checkpoint
+
+    model.load_state_dict(state_dict, strict=False)
+    print(f"Loaded checkpoint from: {config.CHECKPOINT_PATH}")
+
+    if isinstance(checkpoint, dict):
+        for key in ["fold", "epoch", "f1_score"]:
+            if key in checkpoint:
+                print(f"  {key.capitalize()}: {checkpoint[key]}")
+
+    model.to(config.DEVICE)
+    model.eval()
+
+    texts = df["text"].tolist()
+    labels = df["label"].tolist()
+    languages = df["lang"].tolist()
+
+    dataset = TestDataset(texts, tokenizer, config.MAX_LENGTH)
+    dataloader = DataLoader(dataset, batch_size=config.BATCH_SIZE, shuffle=False)
+
+    all_preds = []
+    all_probs = []
+
+    with torch.no_grad():
+        for batch in tqdm(dataloader, desc="Inference"):
+            input_ids = batch["input_ids"].to(config.DEVICE)
+            attention_mask = batch["attention_mask"].to(config.DEVICE)
+
+            outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+            logits = outputs.logits
+
+            probs = torch.softmax(logits, dim=-1)
+            preds = torch.argmax(logits, dim=-1)
+
+            all_probs.extend(probs.cpu().numpy().tolist())
+            all_preds.extend(preds.cpu().numpy().tolist())
+
+    metrics = calculate_metrics(all_preds, labels, languages)
+
+    print("\n" + "=" * 80)
+    print("INFERENCE RESULTS ON TRAIN DATA")
+    print("=" * 80)
+
+    print(f"\nOverall Metrics:")
+    print(f"  Macro Precision: {metrics['overall']['macro_precision']:.4f}")
+    print(f"  Macro Recall:    {metrics['overall']['macro_recall']:.4f}")
+    print(f"  Macro F1:        {metrics['overall']['macro_f1']:.4f}")
+
+    print(f"\nPer-Language Metrics:")
+    for lang in sorted([k for k in metrics.keys() if k != "overall"]):
+        print(f"  {lang.upper()}:")
+        print(f"    Precision: {metrics[lang]['macro_precision']:.4f}")
+        print(f"    Recall:    {metrics[lang]['macro_recall']:.4f}")
+        print(f"    F1:        {metrics[lang]['macro_f1']:.4f}")
+
+    return {
+        "predictions": all_preds,
+        "probabilities": all_probs,
+        "labels": labels,
+        "languages": languages,
+        "metrics": metrics
+    }

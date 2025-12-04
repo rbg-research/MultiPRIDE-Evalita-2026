@@ -31,6 +31,18 @@ cd MultiPRIDE-Evalita-2026
 # Label Distribution on Augmented Data
 ![Label Distribution - Augmented](figures/augumented_data_label_distribution.svg)
 
+# MLM Fine-Tuning (Transductive Transfer Learning)
+![](figures/optuna_analysis.png)
+
+# Classification Fine-Tuning (Transductive + Inductive Transfer Learning)
+
+![Training and Validation Loss](figures/mlm_loss_over_steps.svg)
+
+|![Optuna Parameter Selection](figures/optuna_batch_size_impact.svg)|  ![Optuna Parameter Selection](figures/optuna_epochs_impact.svg)  |
+|:--:|:--:|
+|![Optuna Parameter Selection](figures/optuna_learning_rate_impact.svg)|   ![Optuna Parameter Selection](figures/optuna_weight_decay_impact.svg) |
+
+
 # Installation
 
 ```commandline
