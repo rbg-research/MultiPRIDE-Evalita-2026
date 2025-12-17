@@ -47,6 +47,11 @@ cd MultiPRIDE-Evalita-2026
 # Threshold Analysis
 ![Threshold Analysis](figures/threshold_analysis.png)
 
+# Final Test-set Results
+![Final F1](figures/chart_f1.svg)
+
+![Final All Metrics](figures/chart_all_metrics.svg)
+
 # Installation
 
 ```commandline
